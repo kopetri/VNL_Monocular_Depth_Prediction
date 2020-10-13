@@ -148,6 +148,7 @@ class NYUDV2Dataset():
         :param depth: 1-channel depth, [1, h, w]
         :return: depth bins [1, h, w]
         """
+        #cfg.DATASET.DEPTH_BIN_INTERVAL = 0.014869659475855161
         invalid_mask = depth < 0.
         depth[depth < cfg.DATASET.DEPTH_MIN] = cfg.DATASET.DEPTH_MIN
         depth[depth > cfg.DATASET.DEPTH_MAX] = cfg.DATASET.DEPTH_MAX

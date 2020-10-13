@@ -1,4 +1,5 @@
 from data.load_dataset import CustomerDataLoader
+from lib.models.image_transfer import resize_image
 from lib.utils.training_stats import TrainingStats
 from lib.utils.evaluate_depth_error import validate_err
 from lib.models.metric_depth_model import *
