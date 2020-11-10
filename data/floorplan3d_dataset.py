@@ -15,7 +15,7 @@ class FLOORPLAN3DDataset():
     def initialize(self, opt):
         self.opt = opt
         self.root = opt.dataroot
-        self.depth_normalize = 1000.
+        self.depth_normalize = 10000.
         self.dir_anno = os.path.join(opt.dataroot, "{}.{}.json".format(opt.floorplan_type, opt.phase_anno))
         self.A_paths, self.B_paths, self.AB_anno = self.getData()
         self.data_size = len(self.AB_anno)
@@ -55,6 +55,7 @@ class FLOORPLAN3DDataset():
         if self.A is None:
             A = cv2.imread(A_path)  # bgr, H*W*C
             B = cv2.imread(B_path, -1) / self.depth_normalize  # the max depth is 10m
+            B = np.clip(B, 0, 1)
         else:
             A = self.A[anno_index]  # C*W*H
             B = self.B[anno_index] / self.depth_normalize # the max depth is 10m
