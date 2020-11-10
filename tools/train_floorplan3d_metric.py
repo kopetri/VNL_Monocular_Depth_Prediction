@@ -74,16 +74,27 @@ def val(val_dataloader, model):
         smoothed_criteria = validate_err(pred_depth, data['B_raw'], smoothed_criteria, (45, 471, 41, 601))
     return {'abs_rel': smoothed_criteria['err_absRel'].GetGlobalAverageValue()}
 
+class FloorplanTrainOptions(TrainOptions):
+    def initialize(self, parser):
+        parser = TrainOptions.initialize(self, parser)
+        parser.add_argument('--floorplan_type', type=str, help='Type of floorplan')
+        return parser
+
+class FloorplanValOptions(ValOptions):
+    def initialize(self, parser):
+        parser = ValOptions.initialize(self, parser)
+        parser.add_argument('--floorplan_type', type=str, help='Type of floorplan')
+        return parser
+
 
 if __name__=='__main__':
     # Train args
-    train_opt = TrainOptions()
-    train_opt.add_argument('--floorplan_type', type=str, help='Type of floorplan')
+    train_opt = FloorplanTrainOptions()
     train_args = train_opt.parse()
     train_opt.print_options(train_args)
 
     # Validation args
-    val_opt = ValOptions()
+    val_opt = FloorplanValOptions()
     val_args = val_opt.parse()
     val_args.batchsize = 1
     val_args.thread = 0
