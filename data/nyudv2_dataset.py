@@ -7,6 +7,8 @@ import scipy.io as sio
 from lib.core.config import cfg
 import torchvision.transforms as transforms
 from lib.utils.logging import setup_logging
+import h5py
+from pathlib import Path
 
 logger = setup_logging(__name__)
 
@@ -53,8 +55,16 @@ class NYUDV2Dataset():
         B_path = self.B_paths[anno_index]
 
         if self.A is None:
-            A = cv2.imread(A_path)  # bgr, H*W*C
-            B = cv2.imread(B_path, -1) / self.depth_normalize  # the max depth is 10m
+            if A_path.endswith('.h5'):
+                assert Path(A_path).resolve().exists(), "h5 file does not exist!"
+                A_path = Path(A_path).resolve().as_posix()
+                h5f = h5py.File(A_path, "r")
+                A = np.array(h5f['rgb'])
+                A = np.transpose(A, (1, 2, 0))
+                B = np.array(h5f['depth']) / 10.0
+            else:
+                A = cv2.imread(A_path)  # bgr, H*W*C
+                B = cv2.imread(B_path, -1) / self.depth_normalize  # the max depth is 10m
         else:
             A = self.A[anno_index]  # C*W*H
             B = self.B[anno_index] / self.depth_normalize # the max depth is 10m
