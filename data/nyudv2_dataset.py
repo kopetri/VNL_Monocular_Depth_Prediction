@@ -18,7 +18,7 @@ class NYUDV2Dataset():
         self.opt = opt
         self.root = opt.dataroot
         self.depth_normalize = 60000.
-        self.dir_anno = os.path.join(cfg.ROOT_DIR, opt.dataroot, 'annotations', opt.phase_anno + '_annotations.json')
+        self.dir_anno = os.path.join(opt.dataroot, 'nyudepthv2','nyu.json')
         self.A_paths, self.B_paths, self.AB_anno = self.getData()
         self.data_size = len(self.AB_anno)
         self.uniform_size = (480, 640)
@@ -35,8 +35,8 @@ class NYUDV2Dataset():
         else:
             self.A = None
             self.B = None
-        A_list = [os.path.join(cfg.ROOT_DIR, self.opt.dataroot, self.opt.phase_anno, AB_anno[i]['rgb_path']) for i in range(len(AB_anno))]
-        B_list = [os.path.join(cfg.ROOT_DIR, self.opt.dataroot, self.opt.phase_anno, AB_anno[i]['depth_path']) for i in range(len(AB_anno))]
+        A_list = [os.path.join(self.opt.dataroot, AB_anno[i]['rgb_path']) for i in range(len(AB_anno))]
+        B_list = [os.path.join(self.opt.dataroot, AB_anno[i]['depth_path']) for i in range(len(AB_anno))]
         logger.info('Loaded NYUDV2 data!')
         return A_list, B_list, AB_anno
 
