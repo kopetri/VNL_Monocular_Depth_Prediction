@@ -18,7 +18,7 @@ class NYUDV2Dataset():
         self.opt = opt
         self.root = opt.dataroot
         self.depth_normalize = 60000.
-        self.dir_anno = os.path.join(opt.dataroot, 'nyudepthv2','nyu.json')
+        self.dir_anno = os.path.join(opt.dataroot, 'nyudepthv2','nyu.{}.json'.format(opt.phase_anno))
         self.A_paths, self.B_paths, self.AB_anno = self.getData()
         self.data_size = len(self.AB_anno)
         self.uniform_size = (480, 640)
